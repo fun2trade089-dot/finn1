@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { motion } from 'framer-motion';
-import { Rocket, Mail, Lock, ArrowRight, Github, Loader2, AlertCircle } from 'lucide-react';
+import { Rocket, Mail, Lock, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
 import { supabase } from '../utils/supabaseClient';
 
 const Login = () => {
@@ -39,17 +39,6 @@ const Login = () => {
       setError(err.message || 'An error occurred during authentication');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleGitHubLogin = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'github',
-      });
-      if (error) throw error;
-    } catch (err: any) {
-      setError(err.message);
     }
   };
 
@@ -148,19 +137,12 @@ const Login = () => {
 
         <div className="mt-10 pt-10 border-t border-white/5">
           <button 
-            onClick={handleGitHubLogin}
-            className="w-full glass border-white/10 py-4 rounded-2xl text-sm font-bold flex items-center justify-center gap-3 hover:bg-white/10 transition-all"
-          >
-            <Github size={18} /> Continue with GitHub
-          </button>
-          
-          <button 
             onClick={() => {
               setIsSignUp(!isSignUp);
               setError(null);
               setMessage(null);
             }}
-            className="w-full mt-6 text-center text-xs text-gray-500 hover:text-white transition-colors"
+            className="w-full text-center text-xs text-gray-500 hover:text-white transition-colors"
           >
             {isSignUp ? (
               <>Already have an account? <span className="text-success font-bold hover:underline">Sign In</span></>
