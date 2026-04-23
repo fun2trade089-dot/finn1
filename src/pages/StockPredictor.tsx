@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Lock, Cpu, BarChart3, TrendingUp, AlertCircle, Mail, Sparkles } from 'lucide-react';
+import { Lock, Cpu, BarChart3, TrendingUp, AlertCircle, Sparkles } from 'lucide-react';
 
 const StockPredictor = () => {
   const previewCards = [
@@ -46,7 +46,7 @@ const StockPredictor = () => {
         ))}
       </div>
 
-      {/* Progress & Waitlist */}
+      {/* Progress Section */}
       <div className="w-full max-w-xl">
         <div className="mb-10">
           <div className="flex justify-between text-xs font-bold uppercase tracking-widest mb-3">
@@ -62,19 +62,9 @@ const StockPredictor = () => {
             />
           </div>
         </div>
-
-        <div className="glass p-2 rounded-2xl flex flex-col md:flex-row gap-2 border-white/10">
-          <input 
-            type="email" 
-            placeholder="Enter your email for early access"
-            className="flex-1 bg-transparent px-6 py-3 text-sm focus:outline-none"
-          />
-          <button className="bg-success text-primary font-black px-8 py-3 rounded-xl hover:brightness-110 transition-all flex items-center justify-center gap-2">
-            Notify Me <Mail size={18} />
-          </button>
-        </div>
-        <p className="text-center text-[10px] text-gray-500 mt-4 uppercase tracking-widest font-bold">
-          Join 2,400+ people on the waitlist
+        
+        <p className="text-center text-[10px] text-gray-500 uppercase tracking-widest font-bold">
+          Full launch expected Q3 2026
         </p>
       </div>
     </div>
