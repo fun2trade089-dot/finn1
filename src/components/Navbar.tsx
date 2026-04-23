@@ -46,7 +46,7 @@ const Navbar = () => {
             <Rocket className="text-primary" size={24} fill="currentColor" />
           </div>
           <span className="text-2xl font-bold font-heading tracking-tight">
-            finn<span className="text-success">base</span>
+            Finnbase
           </span>
         </Link>
 
@@ -75,21 +75,21 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Menu Toggle */}
-        <button className="md:hidden text-white" onClick={() => setIsOpen(!isOpen)}>
+        <button className="md:hidden text-white relative z-50" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
-      {/* Mobile Nav */}
+      {/* Mobile Nav Overlay */}
       {isOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full glass border-t border-white/10 p-6 flex flex-col gap-6 animate-in slide-in-from-top duration-300">
+        <div className="md:hidden fixed inset-0 z-40 bg-primary/95 backdrop-blur-xl flex flex-col items-center justify-center gap-8 animate-in fade-in duration-300">
           {navLinks.map((link) => (
             <Link
               key={link.path}
               to={link.path}
               onClick={() => setIsOpen(false)}
               className={cn(
-                "flex items-center gap-4 text-lg font-medium",
+                "flex items-center gap-4 text-2xl font-bold",
                 location.pathname === link.path ? "text-success" : "text-gray-400"
               )}
             >
@@ -98,10 +98,13 @@ const Navbar = () => {
             </Link>
           ))}
           <button 
-            onClick={handleLogout}
-            className="flex items-center gap-4 text-lg font-medium text-gray-400 hover:text-danger"
+            onClick={() => {
+              setIsOpen(false);
+              handleLogout();
+            }}
+            className="flex items-center gap-4 text-2xl font-bold text-gray-400 hover:text-danger"
           >
-            <LogOut size={20} />
+            <LogOut size={24} />
             Logout
           </button>
         </div>

@@ -8,6 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
@@ -18,7 +19,13 @@ const Login = () => {
     setMessage(null);
 
     try {
-      if (isSignUp) {
+      if (isForgotPassword) {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/login`,
+        });
+        if (error) throw error;
+        setMessage('Password reset link sent to your email!');
+      } else if (isSignUp) {
         const { error } = await supabase.auth.signUp({
           email,
           password,
@@ -42,6 +49,20 @@ const Login = () => {
     }
   };
 
+  const toggleMode = () => {
+    setIsSignUp(!isSignUp);
+    setIsForgotPassword(false);
+    setError(null);
+    setMessage(null);
+  };
+
+  const toggleForgotPassword = () => {
+    setIsForgotPassword(!isForgotPassword);
+    setIsSignUp(false);
+    setError(null);
+    setMessage(null);
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-primary px-4 relative overflow-hidden">
       {/* Background Orbs */}
@@ -58,10 +79,10 @@ const Login = () => {
             <Rocket className="text-primary" size={32} fill="currentColor" />
           </div>
           <h1 className="text-3xl font-heading font-black">
-            {isSignUp ? 'Create Account' : 'Welcome to finnbase'}
+            {isForgotPassword ? 'Reset Password' : (isSignUp ? 'Create Account' : 'Welcome to Finnbase')}
           </h1>
           <p className="text-gray-500 text-sm mt-2 text-center">
-            {isSignUp ? 'Join thousands of smart investors' : 'Sign in to manage your wealth'}
+            {isForgotPassword ? 'Enter your email to receive a reset link' : (isSignUp ? 'Join thousands of smart investors' : 'Sign in to manage your wealth')}
           </p>
         </div>
 
@@ -103,23 +124,33 @@ const Login = () => {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <div className="flex justify-between items-center ml-1">
-              <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Password</label>
-              {!isSignUp && <a href="#" className="text-[10px] text-success font-bold hover:underline">Forgot?</a>}
+          {!isForgotPassword && (
+            <div className="space-y-2">
+              <div className="flex justify-between items-center ml-1">
+                <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Password</label>
+                {!isSignUp && (
+                  <button 
+                    type="button"
+                    onClick={toggleForgotPassword}
+                    className="text-[10px] text-success font-bold hover:underline"
+                  >
+                    Forgot?
+                  </button>
+                )}
+              </div>
+              <div className="relative">
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600" size={18} />
+                <input 
+                  type="password" 
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-sm focus:outline-none focus:border-success/50 transition-all"
+                />
+              </div>
             </div>
-            <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600" size={18} />
-              <input 
-                type="password" 
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-sm focus:outline-none focus:border-success/50 transition-all"
-              />
-            </div>
-          </div>
+          )}
 
           <button 
             type="submit"
@@ -128,28 +159,33 @@ const Login = () => {
           >
             {loading ? <Loader2 className="animate-spin" size={20} /> : (
               <>
-                {isSignUp ? 'Sign Up' : 'Sign In'}
+                {isForgotPassword ? 'Send Reset Link' : (isSignUp ? 'Sign Up' : 'Sign In')}
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </>
             )}
           </button>
         </form>
 
-        <div className="mt-10 pt-10 border-t border-white/5">
-          <button 
-            onClick={() => {
-              setIsSignUp(!isSignUp);
-              setError(null);
-              setMessage(null);
-            }}
-            className="w-full text-center text-xs text-gray-500 hover:text-white transition-colors"
-          >
-            {isSignUp ? (
-              <>Already have an account? <span className="text-success font-bold hover:underline">Sign In</span></>
-            ) : (
-              <>Don't have an account? <span className="text-success font-bold hover:underline">Create one</span></>
-            )}
-          </button>
+        <div className="mt-10 pt-10 border-t border-white/5 text-center">
+          {isForgotPassword ? (
+            <button 
+              onClick={toggleForgotPassword}
+              className="text-xs text-gray-500 hover:text-white transition-colors"
+            >
+              Back to <span className="text-success font-bold hover:underline">Sign In</span>
+            </button>
+          ) : (
+            <button 
+              onClick={toggleMode}
+              className="w-full text-center text-xs text-gray-500 hover:text-white transition-colors"
+            >
+              {isSignUp ? (
+                <>Already have an account? <span className="text-success font-bold hover:underline">Sign In</span></>
+              ) : (
+                <>Don't have an account? <span className="text-success font-bold hover:underline">Create one</span></>
+              )}
+            </button>
+          )}
         </div>
       </motion.div>
     </div>

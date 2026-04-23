@@ -151,9 +151,6 @@ const TopFunds = () => {
               </div>
             </div>
 
-            <button className="w-full mt-6 bg-white/5 group-hover:bg-success group-hover:text-primary py-3 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2">
-              Invest Now <ChevronRight size={16} />
-            </button>
           </div>
         ))}
       </div>

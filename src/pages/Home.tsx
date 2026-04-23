@@ -5,9 +5,11 @@ import {
   ShieldCheck, 
   Zap, 
   BarChart3, 
-  PieChart, 
   ArrowUpRight, 
-  ArrowDownRight 
+  ArrowDownRight,
+  Globe,
+  Users,
+  Award
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -28,18 +30,18 @@ const Home = () => {
       color: 'from-emerald-500/20 to-success/5'
     },
     {
-      title: 'SWP Strategy',
-      desc: 'Plan your retirement withdrawals to ensure your corpus lasts as long as you need.',
-      icon: <PieChart className="text-blue-400" size={24} />,
-      link: '/calculators',
-      color: 'from-blue-500/20 to-blue-400/5'
-    },
-    {
       title: 'Top Performing Funds',
       desc: 'Discover the best mutual funds curated by historical performance and risk metrics.',
       icon: <BarChart3 className="text-amber-400" size={24} />,
       link: '/top-sips',
       color: 'from-amber-500/20 to-amber-400/5'
+    },
+    {
+      title: 'AI Market Analysis',
+      desc: 'Get data-driven insights on market trends and potential growth opportunities.',
+      icon: <Zap className="text-blue-400" size={24} />,
+      link: '/predictor',
+      color: 'from-blue-500/20 to-blue-400/5'
     },
   ];
 
@@ -118,6 +120,43 @@ const Home = () => {
               </Link>
             </motion.div>
           ))}
+        </div>
+      </section>
+
+      {/* Trust Metrics - Replaces Review Section */}
+      <section className="px-4 md:px-8 max-w-7xl mx-auto mb-32">
+        <div className="glass rounded-[40px] p-12 border-white/5 bg-linear-to-b from-white/5 to-transparent text-center">
+           <h2 className="text-3xl md:text-4xl font-heading font-bold mb-16">Built on Foundation of Trust</h2>
+           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+              <div className="space-y-4">
+                <div className="mx-auto w-16 h-16 bg-success/10 rounded-full flex items-center justify-center text-success mb-6">
+                  <ShieldCheck size={32} />
+                </div>
+                <h4 className="text-2xl font-bold font-heading">Secure API</h4>
+                <p className="text-gray-500 text-sm">Bank-grade encryption for all your data and transactions.</p>
+              </div>
+              <div className="space-y-4">
+                <div className="mx-auto w-16 h-16 bg-blue-500/10 rounded-full flex items-center justify-center text-blue-400 mb-6">
+                  <Globe size={32} />
+                </div>
+                <h4 className="text-2xl font-bold font-heading">Global Data</h4>
+                <p className="text-gray-500 text-sm">Real-time market insights from across the world's major exchanges.</p>
+              </div>
+              <div className="space-y-4">
+                <div className="mx-auto w-16 h-16 bg-amber-500/10 rounded-full flex items-center justify-center text-amber-400 mb-6">
+                  <Users size={32} />
+                </div>
+                <h4 className="text-2xl font-bold font-heading">User Focused</h4>
+                <p className="text-gray-500 text-sm">Designed specifically to make complex finance simple for everyone.</p>
+              </div>
+              <div className="space-y-4">
+                <div className="mx-auto w-16 h-16 bg-purple-500/10 rounded-full flex items-center justify-center text-purple-400 mb-6">
+                  <Award size={32} />
+                </div>
+                <h4 className="text-2xl font-bold font-heading">Certified Logic</h4>
+                <p className="text-gray-500 text-sm">All calculators follow standard SEBI and global compounding models.</p>
+              </div>
+           </div>
         </div>
       </section>
 
