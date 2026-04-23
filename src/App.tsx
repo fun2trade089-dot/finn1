@@ -1,5 +1,5 @@
 import { useState, useEffect, type ReactNode } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -10,6 +10,23 @@ import Login from './pages/Login';
 import ResetPassword from './pages/ResetPassword';
 import { supabase } from './utils/supabaseClient';
 import type { Session } from '@supabase/supabase-js';
+
+// Separate component to handle Auth navigation
+const AuthHandler = ({ children }: { children: ReactNode }) => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        navigate('/reset-password');
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
+  return <>{children}</>;
+};
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const location = useLocation();
@@ -37,7 +54,7 @@ function App() {
       setLoading(false);
     });
 
-    // Listen for changes
+    // Listen for session changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
@@ -57,34 +74,36 @@ function App() {
 
   return (
     <Router>
-      <Layout>
-        <Routes>
-          <Route 
-            path="/login" 
-            element={isAuthenticated ? <Navigate to="/" /> : <Login />} 
-          />
-          <Route 
-            path="/reset-password" 
-            element={<ResetPassword />} 
-          />
-          <Route 
-            path="/" 
-            element={isAuthenticated ? <Home /> : <Navigate to="/login" />} 
-          />
-          <Route 
-            path="/calculators" 
-            element={isAuthenticated ? <Calculators /> : <Navigate to="/login" />} 
-          />
-          <Route 
-            path="/top-sips" 
-            element={isAuthenticated ? <TopFunds /> : <Navigate to="/login" />} 
-          />
-          <Route 
-            path="/predictor" 
-            element={isAuthenticated ? <StockPredictor /> : <Navigate to="/login" />} 
-          />
-        </Routes>
-      </Layout>
+      <AuthHandler>
+        <Layout>
+          <Routes>
+            <Route 
+              path="/login" 
+              element={isAuthenticated ? <Navigate to="/" /> : <Login />} 
+            />
+            <Route 
+              path="/reset-password" 
+              element={<ResetPassword />} 
+            />
+            <Route 
+              path="/" 
+              element={isAuthenticated ? <Home /> : <Navigate to="/login" />} 
+            />
+            <Route 
+              path="/calculators" 
+              element={isAuthenticated ? <Calculators /> : <Navigate to="/login" />} 
+            />
+            <Route 
+              path="/top-sips" 
+              element={isAuthenticated ? <TopFunds /> : <Navigate to="/login" />} 
+            />
+            <Route 
+              path="/predictor" 
+              element={isAuthenticated ? <StockPredictor /> : <Navigate to="/login" />} 
+            />
+          </Routes>
+        </Layout>
+      </AuthHandler>
     </Router>
   );
 }
