@@ -7,9 +7,9 @@ import {
   BarChart3, 
   ArrowUpRight, 
   ArrowDownRight,
-  Globe,
-  Users,
-  Award
+  Eye,
+  Lock,
+  Heart
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -123,51 +123,50 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Trust Metrics - Replaces Review Section */}
+      {/* Honest Why Finnbase Section */}
       <section className="px-4 md:px-8 max-w-7xl mx-auto mb-32">
-        <div className="glass rounded-[40px] p-12 border-white/5 bg-linear-to-b from-white/5 to-transparent text-center">
-           <h2 className="text-3xl md:text-4xl font-heading font-bold mb-16">Built on Foundation of Trust</h2>
-           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-              <div className="space-y-4">
-                <div className="mx-auto w-16 h-16 bg-success/10 rounded-full flex items-center justify-center text-success mb-6">
-                  <ShieldCheck size={32} />
+        <div className="glass rounded-[40px] p-12 md:p-20 border-white/5 bg-linear-to-b from-white/5 to-transparent">
+           <div className="text-center mb-16">
+             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Why we started Finnbase</h2>
+             <p className="text-gray-400 max-w-2xl mx-auto">We're a new platform built by investors who were tired of complicated, hidden-fee tools. Here's our promise to you.</p>
+           </div>
+           
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              <div className="text-center space-y-6">
+                <div className="mx-auto w-16 h-16 bg-success/10 rounded-2xl flex items-center justify-center text-success">
+                  <Eye size={32} />
                 </div>
-                <h4 className="text-2xl font-bold font-heading">Secure API</h4>
-                <p className="text-gray-500 text-sm">Bank-grade encryption for all your data and transactions.</p>
+                <h4 className="text-xl font-bold font-heading">Total Transparency</h4>
+                <p className="text-gray-500 text-sm leading-relaxed">No black boxes. We use standard mathematical models (like Compound Interest) so you can verify every calculation yourself.</p>
               </div>
-              <div className="space-y-4">
-                <div className="mx-auto w-16 h-16 bg-blue-500/10 rounded-full flex items-center justify-center text-blue-400 mb-6">
-                  <Globe size={32} />
+
+              <div className="text-center space-y-6">
+                <div className="mx-auto w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-400">
+                  <Lock size={32} />
                 </div>
-                <h4 className="text-2xl font-bold font-heading">Global Data</h4>
-                <p className="text-gray-500 text-sm">Real-time market insights from across the world's major exchanges.</p>
+                <h4 className="text-xl font-bold font-heading">Privacy First</h4>
+                <p className="text-gray-500 text-sm leading-relaxed">We don't sell your data. We don't even have access to your personal financial files. Your planning is your business.</p>
               </div>
-              <div className="space-y-4">
-                <div className="mx-auto w-16 h-16 bg-amber-500/10 rounded-full flex items-center justify-center text-amber-400 mb-6">
-                  <Users size={32} />
+
+              <div className="text-center space-y-6">
+                <div className="mx-auto w-16 h-16 bg-purple-500/10 rounded-2xl flex items-center justify-center text-purple-400">
+                  <Heart size={32} />
                 </div>
-                <h4 className="text-2xl font-bold font-heading">User Focused</h4>
-                <p className="text-gray-500 text-sm">Designed specifically to make complex finance simple for everyone.</p>
-              </div>
-              <div className="space-y-4">
-                <div className="mx-auto w-16 h-16 bg-purple-500/10 rounded-full flex items-center justify-center text-purple-400 mb-6">
-                  <Award size={32} />
-                </div>
-                <h4 className="text-2xl font-bold font-heading">Certified Logic</h4>
-                <p className="text-gray-500 text-sm">All calculators follow standard SEBI and global compounding models.</p>
+                <h4 className="text-xl font-bold font-heading">Free Forever</h4>
+                <p className="text-gray-500 text-sm leading-relaxed">Financial literacy shouldn't have a price tag. Our core planning tools will always be free for everyone to use.</p>
               </div>
            </div>
         </div>
       </section>
 
-      {/* Why Choose Us */}
+      {/* Trust & Security */}
       <section className="px-4 md:px-8 max-w-5xl mx-auto mb-20">
         <div className="glass rounded-[40px] p-12 md:p-20 relative overflow-hidden border-white/5">
           <div className="absolute top-0 right-0 bg-success/5 w-64 h-64 blur-[80px] rounded-full" />
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Why Trust <br /> <span className="text-success">Finnbase?</span></h2>
+              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Simple. Secure. <br /> <span className="text-success">Reliable.</span></h2>
               <p className="text-gray-400 mb-10 leading-relaxed">
                 We combine advanced algorithms with intuitive design to give you the clearest picture of your financial future.
               </p>
@@ -175,15 +174,15 @@ const Home = () => {
                 <div className="flex gap-4">
                   <div className="mt-1 bg-success/20 p-1.5 rounded-lg text-success"><ShieldCheck size={20} /></div>
                   <div>
-                    <h4 className="font-bold mb-1">Bank-Grade Precision</h4>
-                    <p className="text-sm text-gray-500">Calculations based on actual compounding models.</p>
+                    <h4 className="font-bold mb-1">Standard Logic</h4>
+                    <p className="text-sm text-gray-500">Calculations based on verified SEBI & global models.</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
                   <div className="mt-1 bg-blue-500/20 p-1.5 rounded-lg text-blue-400"><Zap size={20} /></div>
                   <div>
-                    <h4 className="font-bold mb-1">Instant Insights</h4>
-                    <p className="text-sm text-gray-500">See the impact of your decisions in real-time.</p>
+                    <h4 className="font-bold mb-1">Real-time Analysis</h4>
+                    <p className="text-sm text-gray-500">See the impact of your decisions instantly.</p>
                   </div>
                 </div>
               </div>
@@ -191,20 +190,20 @@ const Home = () => {
             
             <div className="grid grid-cols-2 gap-4">
               <div className="aspect-square glass rounded-3xl flex flex-col items-center justify-center p-6 text-center border-white/10 hover:bg-white/10 transition-colors">
-                <span className="text-3xl font-bold font-heading text-success mb-2">10M+</span>
-                <span className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Calculations</span>
+                <ShieldCheck className="text-success mb-2" size={32} />
+                <span className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Secure</span>
               </div>
               <div className="aspect-square glass rounded-3xl flex flex-col items-center justify-center p-6 text-center border-white/10 translate-y-8 hover:bg-white/10 transition-colors">
-                <span className="text-3xl font-bold font-heading text-accent mb-2">4.9/5</span>
-                <span className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">User Rating</span>
+                <Eye className="text-accent mb-2" size={32} />
+                <span className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Transparent</span>
               </div>
               <div className="aspect-square glass rounded-3xl flex flex-col items-center justify-center p-6 text-center border-white/10 hover:bg-white/10 transition-colors">
-                <span className="text-3xl font-bold font-heading text-blue-400 mb-2">100%</span>
-                <span className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Free Forever</span>
+                <Lock className="text-blue-400 mb-2" size={32} />
+                <span className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Private</span>
               </div>
               <div className="aspect-square glass rounded-3xl flex flex-col items-center justify-center p-6 text-center border-white/10 translate-y-8 hover:bg-white/10 transition-colors">
-                <span className="text-3xl font-bold font-heading text-white mb-2">24/7</span>
-                <span className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">AI Analysis</span>
+                <Heart className="text-white mb-2" size={32} />
+                <span className="text-[10px] text-gray-500 uppercase font-bold tracking-widest">Free</span>
               </div>
             </div>
           </div>
