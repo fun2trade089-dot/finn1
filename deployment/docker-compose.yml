@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  finnbase:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile
+    ports:
+      - "80:80"
+    restart: always
