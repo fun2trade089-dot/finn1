@@ -7,12 +7,13 @@ import Calculators from './pages/Calculators';
 import TopFunds from './pages/TopFunds';
 import StockPredictor from './pages/StockPredictor';
 import Login from './pages/Login';
+import ResetPassword from './pages/ResetPassword';
 import { supabase } from './utils/supabaseClient';
 import type { Session } from '@supabase/supabase-js';
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const location = useLocation();
-  const showNav = location.pathname !== '/login';
+  const showNav = location.pathname !== '/login' && location.pathname !== '/reset-password';
 
   return (
     <div className="min-h-screen bg-primary text-white flex flex-col">
@@ -61,6 +62,10 @@ function App() {
           <Route 
             path="/login" 
             element={isAuthenticated ? <Navigate to="/" /> : <Login />} 
+          />
+          <Route 
+            path="/reset-password" 
+            element={<ResetPassword />} 
           />
           <Route 
             path="/" 
