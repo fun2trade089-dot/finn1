@@ -39,7 +39,7 @@ const Login = () => {
         if (data?.user && data?.session) {
             setMessage('Account created and logged in!');
         } else {
-            setMessage('Check your email to confirm your account.');
+            setMessage('Success! Check your inbox for the confirmation link.');
         }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
@@ -49,13 +49,13 @@ const Login = () => {
         if (error) throw error;
       }
     } catch (err: any) {
-      console.error('Auth Error Details:', err);
+      console.error('Auth Full Error:', err);
       
       let msg = err.message || 'An unexpected error occurred';
       
-      // Handle the 504 Gateway Timeout / AuthRetryableFetchError
-      if (msg.includes('fetch') || msg === '{}' || err.name === 'AuthRetryableFetchError') {
-        msg = "Supabase Server Timeout (504). This usually means a Trigger or Function in your Supabase Database is failing. Check your Supabase 'Database' logs.";
+      // Specifically handle the 500 error during email sending
+      if (msg.includes('confirmation email') || err.status === 500) {
+        msg = "Email Server Error (500). Supabase is unable to talk to Brevo. Please check your Brevo SMTP Keys and ensure your Gmail is 'Verified' as a Sender in Brevo.";
       }
 
       setError(msg);
@@ -97,7 +97,7 @@ const Login = () => {
             {isForgotPassword ? 'Reset Password' : (isSignUp ? 'Create Account' : 'Welcome to Finnbase')}
           </h1>
           <p className="text-gray-500 text-sm mt-2 text-center px-4">
-            {isForgotPassword ? 'Enter your email for a reset link' : (isSignUp ? 'Join smart investors today' : 'Sign in to manage your wealth')}
+            {isForgotPassword ? 'Enter your email to receive a reset link' : (isSignUp ? 'Join smart investors today' : 'Sign in to manage your wealth')}
           </p>
         </div>
 
