@@ -24,7 +24,7 @@ const Login = () => {
           redirectTo: `${window.location.origin}/reset-password`,
         });
         if (error) throw error;
-        setMessage('Password reset link sent to your email!');
+        setMessage('Password reset link sent!');
       } else if (isSignUp) {
         const { data, error } = await supabase.auth.signUp({
           email,
@@ -49,13 +49,17 @@ const Login = () => {
         if (error) throw error;
       }
     } catch (err: any) {
-      console.error('Auth Full Error:', err);
+      console.error('--- AUTH DEBUG LOG ---');
+      console.error('Name:', err.name);
+      console.error('Status:', err.status);
+      console.error('Message:', err.message);
+      console.error('Full Error Object:', JSON.stringify(err, null, 2));
+      console.error('----------------------');
       
       let msg = err.message || 'An unexpected error occurred';
       
-      // Specifically handle the 500 error during email sending
-      if (msg.includes('confirmation email') || err.status === 500) {
-        msg = "Email Server Error (500). Supabase is unable to talk to Brevo. Please check your Brevo SMTP Keys and ensure your Gmail is 'Verified' as a Sender in Brevo.";
+      if (err.status === 500 || msg.includes('confirmation email')) {
+        msg = `SMTP Error (500): Brevo rejected the connection. Check Brevo -> Transactional -> Real-time logs to see why.`;
       }
 
       setError(msg);
@@ -93,11 +97,11 @@ const Login = () => {
           <div className="bg-success p-3 rounded-2xl mb-4">
             <Rocket className="text-primary" size={32} fill="currentColor" />
           </div>
-          <h1 className="text-3xl font-heading font-black text-center">
+          <h1 className="text-3xl font-heading font-black text-center text-white">
             {isForgotPassword ? 'Reset Password' : (isSignUp ? 'Create Account' : 'Welcome to Finnbase')}
           </h1>
           <p className="text-gray-500 text-sm mt-2 text-center px-4">
-            {isForgotPassword ? 'Enter your email to receive a reset link' : (isSignUp ? 'Join smart investors today' : 'Sign in to manage your wealth')}
+            {isForgotPassword ? 'Enter your email for a reset link' : (isSignUp ? 'Join smart investors today' : 'Sign in to manage your wealth')}
           </p>
         </div>
 
@@ -108,7 +112,10 @@ const Login = () => {
             className="mb-6 p-4 bg-danger/10 border border-danger/20 rounded-2xl flex gap-3 text-danger text-sm"
           >
             <AlertCircle size={18} className="shrink-0" />
-            <p className="break-words font-medium">{error}</p>
+            <div className="overflow-hidden">
+                <p className="font-bold mb-1">Signup Failed</p>
+                <p className="text-xs break-words opacity-90">{error}</p>
+            </div>
           </motion.div>
         )}
 
@@ -119,7 +126,7 @@ const Login = () => {
             className="mb-6 p-4 bg-success/10 border border-success/20 rounded-2xl flex gap-3 text-success text-sm"
           >
             <CheckCircle2 size={18} className="shrink-0" />
-            <p>{message}</p>
+            <p className="font-medium">{message}</p>
           </motion.div>
         )}
 
