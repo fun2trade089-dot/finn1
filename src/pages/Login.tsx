@@ -18,15 +18,6 @@ const Login = () => {
     setError(null);
     setMessage(null);
 
-    // Basic Validation
-    if (!email || !password) {
-        if (!isForgotPassword) {
-            setError("Please fill in all fields.");
-            setLoading(false);
-            return;
-        }
-    }
-
     try {
       if (isForgotPassword) {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -46,10 +37,9 @@ const Login = () => {
         if (error) throw error;
         
         if (data?.user && data?.session) {
-            // Logged in immediately (Email confirmation might be off)
-            setMessage('Account created successfully!');
+            setMessage('Account created and logged in!');
         } else {
-            setMessage('Success! Please check your email to confirm your account.');
+            setMessage('Check your email to confirm your account.');
         }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
@@ -59,10 +49,24 @@ const Login = () => {
         if (error) throw error;
       }
     } catch (err: any) {
-      console.error('Auth Error:', err);
-      // Handle the {} error case specifically
-      const errorMessage = err.message || (typeof err === 'object' ? JSON.stringify(err) : 'An unexpected error occurred');
-      setError(errorMessage === '{}' ? 'Authentication failed. Please check your Supabase credentials or Rate Limits.' : errorMessage);
+      console.error('Auth Full Error:', err);
+      
+      // Standardize error message extraction
+      let msg = 'An unexpected error occurred';
+      
+      if (err.message) {
+        msg = err.message;
+      } else if (typeof err === 'string') {
+        msg = err;
+      } else if (err.error_description) {
+        msg = err.error_description;
+      }
+      
+      if (msg === '{}') {
+        msg = "Network error or Rate limit reached. Check console for details.";
+      }
+
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -100,8 +104,8 @@ const Login = () => {
           <h1 className="text-3xl font-heading font-black text-center">
             {isForgotPassword ? 'Reset Password' : (isSignUp ? 'Create Account' : 'Welcome to Finnbase')}
           </h1>
-          <p className="text-gray-500 text-sm mt-2 text-center">
-            {isForgotPassword ? 'Enter your email to receive a reset link' : (isSignUp ? 'Join thousands of smart investors' : 'Sign in to manage your wealth')}
+          <p className="text-gray-500 text-sm mt-2 text-center px-4">
+            {isForgotPassword ? 'Enter your email to receive a reset link' : (isSignUp ? 'Join smart investors today' : 'Sign in to manage your wealth')}
           </p>
         </div>
 
@@ -112,7 +116,7 @@ const Login = () => {
             className="mb-6 p-4 bg-danger/10 border border-danger/20 rounded-2xl flex gap-3 text-danger text-sm"
           >
             <AlertCircle size={18} className="shrink-0" />
-            <p className="break-all">{error}</p>
+            <p className="break-words">{error}</p>
           </motion.div>
         )}
 
