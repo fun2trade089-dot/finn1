@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { motion } from 'framer-motion';
-import { Rocket, Mail, Lock, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
+import { Rocket, Mail, Lock, ArrowRight, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { supabase } from '../utils/supabaseClient';
 
 const Login = () => {
@@ -18,6 +18,15 @@ const Login = () => {
     setError(null);
     setMessage(null);
 
+    // Basic Validation
+    if (!email || !password) {
+        if (!isForgotPassword) {
+            setError("Please fill in all fields.");
+            setLoading(false);
+            return;
+        }
+    }
+
     try {
       if (isForgotPassword) {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -26,15 +35,22 @@ const Login = () => {
         if (error) throw error;
         setMessage('Password reset link sent to your email!');
       } else if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
-            emailRedirectTo: window.location.origin,
+            emailRedirectTo: `${window.location.origin}/reset-password`,
           }
         });
+        
         if (error) throw error;
-        setMessage('Check your email for the confirmation link!');
+        
+        if (data?.user && data?.session) {
+            // Logged in immediately (Email confirmation might be off)
+            setMessage('Account created successfully!');
+        } else {
+            setMessage('Success! Please check your email to confirm your account.');
+        }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
@@ -43,7 +59,10 @@ const Login = () => {
         if (error) throw error;
       }
     } catch (err: any) {
-      setError(err.message || 'An error occurred during authentication');
+      console.error('Auth Error:', err);
+      // Handle the {} error case specifically
+      const errorMessage = err.message || (typeof err === 'object' ? JSON.stringify(err) : 'An unexpected error occurred');
+      setError(errorMessage === '{}' ? 'Authentication failed. Please check your Supabase credentials or Rate Limits.' : errorMessage);
     } finally {
       setLoading(false);
     }
@@ -78,7 +97,7 @@ const Login = () => {
           <div className="bg-success p-3 rounded-2xl mb-4">
             <Rocket className="text-primary" size={32} fill="currentColor" />
           </div>
-          <h1 className="text-3xl font-heading font-black">
+          <h1 className="text-3xl font-heading font-black text-center">
             {isForgotPassword ? 'Reset Password' : (isSignUp ? 'Create Account' : 'Welcome to Finnbase')}
           </h1>
           <p className="text-gray-500 text-sm mt-2 text-center">
@@ -93,7 +112,7 @@ const Login = () => {
             className="mb-6 p-4 bg-danger/10 border border-danger/20 rounded-2xl flex gap-3 text-danger text-sm"
           >
             <AlertCircle size={18} className="shrink-0" />
-            <p>{error}</p>
+            <p className="break-all">{error}</p>
           </motion.div>
         )}
 
@@ -103,7 +122,7 @@ const Login = () => {
             animate={{ opacity: 1, height: 'auto' }}
             className="mb-6 p-4 bg-success/10 border border-success/20 rounded-2xl flex gap-3 text-success text-sm"
           >
-            <AlertCircle size={18} className="shrink-0" />
+            <CheckCircle2 size={18} className="shrink-0" />
             <p>{message}</p>
           </motion.div>
         )}
@@ -119,7 +138,7 @@ const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@company.com"
-                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-sm focus:outline-none focus:border-success/50 transition-all"
+                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-sm focus:outline-none focus:border-success/50 transition-all text-white"
               />
             </div>
           </div>
@@ -146,7 +165,7 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-sm focus:outline-none focus:border-success/50 transition-all"
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-sm focus:outline-none focus:border-success/50 transition-all text-white"
                 />
               </div>
             </div>
