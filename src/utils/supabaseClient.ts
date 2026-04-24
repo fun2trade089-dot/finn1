@@ -3,6 +3,13 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+// Log status for debugging (Safe: doesn't show the actual keys)
+console.log('Supabase Connection Status:', {
+  hasUrl: !!supabaseUrl,
+  hasKey: !!supabaseAnonKey,
+  urlFormatValid: supabaseUrl?.startsWith('https://'),
+});
+
 // Only initialize if we have the credentials, otherwise use a placeholder
 export const supabase = (supabaseUrl && supabaseAnonKey) 
   ? createClient(supabaseUrl, supabaseAnonKey)
@@ -19,5 +26,5 @@ export const supabase = (supabaseUrl && supabaseAnonKey)
     } as any;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Supabase credentials missing. Check your .env or Vercel Environment Variables.');
+  console.error('CRITICAL: Supabase credentials are missing!');
 }
